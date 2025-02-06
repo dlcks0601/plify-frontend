@@ -12,16 +12,10 @@ export const useAuthMutation = () => {
       const response = await login(loginBody);
       return response;
     },
-    onSuccess: (data, variables) => {
-      setLogin(
-        {
-          email: variables.email,
-          nickname: '',
-          id: 0,
-        },
-        data.access_token
-      );
-
+    onSuccess: (data) => {
+      const { user, accessToken } = data;
+      setLogin(user, accessToken);
+      console.log(`환영합니다, ${user.nickname}!`);
       router.push('/');
     },
     onError: (error) => {
