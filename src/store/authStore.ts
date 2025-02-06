@@ -10,13 +10,13 @@ export interface User {
   email: string;
   nickname: string;
   profileUrl?: string;
-  id: number;
+  userId: number;
 }
 
 export interface AuthState {
   isLoggedIn: boolean;
   accessToken: string;
-  userInfo: User;
+  user: User;
   hasHydrated: boolean;
 }
 
@@ -34,13 +34,13 @@ const useAuthStore = create(
         {
           isLoggedIn: false,
           accessToken: '',
-          userInfo: {
+          user: {
             email: '',
             nickname: '',
             profileUrl: '',
-            id: 0,
+            userId: 0,
           },
-          hasHydrated: false, // hydration 여부 플래그 추가
+          hasHydrated: false,
         },
         (set) => ({
           setAccessToken: (token: string) => {
@@ -50,20 +50,28 @@ const useAuthStore = create(
             set({
               isLoggedIn: true,
               accessToken: token,
-              userInfo: user,
+              user: {
+                userId: user.userId,
+                email: user.email,
+                nickname: user.nickname,
+                profileUrl: user.profileUrl || '',
+              },
             });
+            sessionStorage.setItem('@token', token);
           },
           logout: () => {
             set({
               accessToken: '',
               isLoggedIn: false,
-              userInfo: {
+              user: {
                 email: '',
                 nickname: '',
                 profileUrl: '',
-                id: 0,
+                userId: 0,
               },
             });
+            sessionStorage.removeItem('auth-storage');
+            sessionStorage.removeItem('@token');
           },
           setHydrated: () => {
             set({ hasHydrated: true });
@@ -75,7 +83,8 @@ const useAuthStore = create(
         partialize: (state) => ({
           isLoggedIn: state.isLoggedIn,
           accessToken: state.accessToken,
-          userInfo: state.userInfo,
+          user: state.user,
+          hasHydrated: state.hasHydrated,
         }),
         storage: createJSONStorage(() => sessionStorage),
         onRehydrateStorage: () => (state) => {
