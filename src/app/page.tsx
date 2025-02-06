@@ -1,22 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React from 'react';
+import Link from 'next/link';
 import useAuthStore from '../store/authStore';
 
 export default function Home() {
-  const router = useRouter();
   const { isLoggedIn, logout, hasHydrated } = useAuthStore();
 
   if (!hasHydrated) return null;
-
-  const handleLogin = () => {
-    router.push('/signin/email');
-  };
-
-  const handleSignup = () => {
-    router.push('/signup/email');
-  };
 
   const handleLogout = () => {
     logout();
@@ -35,20 +25,20 @@ export default function Home() {
           로그아웃
         </button>
       ) : (
-        <>
-          <button
-            onClick={handleLogin}
+        <div className='flex space-x-4'>
+          <Link
+            href='/signin/email'
             className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition'
           >
             로그인
-          </button>
-          <button
-            onClick={handleSignup}
+          </Link>
+          <Link
+            href='/signup/email'
             className='px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition'
           >
             회원가입
-          </button>
-        </>
+          </Link>
+        </div>
       )}
     </main>
   );
