@@ -17,7 +17,7 @@ export default function SignupForm() {
     try {
       await signup({ email, password, nickname, profileUrl: '' }); // profileUrl은 빈 문자열로 전달
       alert('회원가입이 완료되었습니다!');
-      router.push('/signin/email'); // 회원가입 후 로그인 페이지로 이동
+      router.push('/signin/email');
     } catch (error) {
       console.error('회원가입 실패:', error);
       setError('회원가입에 실패했습니다. 다시 시도해주세요.');

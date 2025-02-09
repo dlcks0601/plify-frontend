@@ -6,6 +6,7 @@ interface SignupBody {
   email: string;
   nickname: string;
   password: string;
+  profileUrl?: string;
 }
 
 export interface LoginBody {
