@@ -1,3 +1,5 @@
+import { AuthAction, AuthState } from '@/types/auth.type';
+import { User } from '@/types/user.type';
 import { create } from 'zustand';
 import {
   combine,
@@ -6,27 +8,6 @@ import {
   createJSONStorage,
 } from 'zustand/middleware';
 
-export interface User {
-  email: string;
-  nickname: string;
-  profileUrl?: string;
-  userId: number;
-}
-
-export interface AuthState {
-  isLoggedIn: boolean;
-  accessToken: string;
-  user: User;
-  hasHydrated: boolean;
-}
-
-export interface AuthAction {
-  login: (user: User, token: string) => void;
-  logout: () => void;
-  setAccessToken: (token: string) => void;
-  setHydrated: () => void;
-}
-
 const useAuthStore = create(
   devtools(
     persist(
@@ -34,11 +15,13 @@ const useAuthStore = create(
         {
           isLoggedIn: false,
           accessToken: '',
-          user: {
+          userInfo: {
             email: '',
+            name: '',
             nickname: '',
             profileUrl: '',
             userId: 0,
+            authProvider: 'plify',
           },
           hasHydrated: false,
         },
@@ -50,12 +33,7 @@ const useAuthStore = create(
             set({
               isLoggedIn: true,
               accessToken: token,
-              user: {
-                userId: user.userId,
-                email: user.email,
-                nickname: user.nickname,
-                profileUrl: user.profileUrl || '',
-              },
+              userInfo: user,
             });
             sessionStorage.setItem('@token', token);
           },
@@ -63,7 +41,9 @@ const useAuthStore = create(
             set({
               accessToken: '',
               isLoggedIn: false,
-              user: {
+              userInfo: {
+                authProvider: 'plify',
+                name: '',
                 email: '',
                 nickname: '',
                 profileUrl: '',
@@ -83,7 +63,7 @@ const useAuthStore = create(
         partialize: (state) => ({
           isLoggedIn: state.isLoggedIn,
           accessToken: state.accessToken,
-          user: state.user,
+          userInfo: state.userInfo,
           hasHydrated: state.hasHydrated,
         }),
         storage: createJSONStorage(() => sessionStorage),
