@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Link from 'next/link';
+import Providers from './Providers'; // ✅ 클라이언트 Provider 추가
+import TopNav from './components/Common/TopNavigation/TopNav';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -9,21 +10,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang='en'>
-      <body className='flex flex-col mx-auto max-w-[600px]'>
-        <div className='flex w-full justify-between'>
-          <Link href='/' className='text-black'>
-            plify
-          </Link>
-          <Link href='/list' className='text-black'>
-            List
-          </Link>
-        </div>
-        {children}
+      <body className='flex flex-col min-h-screen'>
+        <Providers>
+          <TopNav />
+          {children}
+        </Providers>
       </body>
     </html>
   );
