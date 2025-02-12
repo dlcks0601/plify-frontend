@@ -1,6 +1,8 @@
+'use client';
+
 import { useState } from 'react';
 import { signup } from '@/apis/auth.api';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export default function SignupForm() {
   const [email, setEmail] = useState('');
@@ -15,7 +17,7 @@ export default function SignupForm() {
     setError(null);
 
     try {
-      await signup({ email, password, nickname, profileUrl: '' }); // profileUrl은 빈 문자열로 전달
+      await signup({ email, password, nickname });
       alert('회원가입이 완료되었습니다!');
       router.push('/signin/email');
     } catch (error) {
