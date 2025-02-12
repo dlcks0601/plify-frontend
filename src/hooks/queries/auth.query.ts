@@ -1,27 +1,46 @@
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import useAuthStore from '@/store/authStore';
-import { login, LoginBody } from '@/apis/auth.api';
+import { AuthResponse } from '@/types/auth.type';
+import { useShallow } from 'zustand/shallow';
+import { postAuthorizationCode, logout as fetchLogout } from '@/apis/auth.api';
+import { useRouter } from 'next/navigation';
 
-export const useAuthMutation = () => {
+export const useAuthMutation = (): UseMutationResult<
+  AuthResponse,
+  unknown,
+  {
+    authorizationCode: string;
+    provider: string;
+  }
+> => {
   const router = useRouter();
-  const { login: setLogin } = useAuthStore();
+  const { login } = useAuthStore();
 
-  const mutation = useMutation({
-    mutationFn: async (loginBody: LoginBody) => {
-      const response = await login(loginBody);
-      return response;
-    },
-    onSuccess: (data) => {
-      const { user, accessToken } = data;
-      setLogin(user, accessToken);
-      console.log(`환영합니다, ${user.nickname}!`);
+  return useMutation({
+    mutationFn: ({ authorizationCode, provider }) =>
+      postAuthorizationCode({ authorizationCode, provider }),
+    onSuccess: async (data) => {
+      const { accessToken, user, isExistingUser } = data;
+      await login(user, accessToken);
+
+      router.prefetch('/');
       router.push('/');
     },
     onError: (error) => {
-      console.error('로그인 실패:', error);
+      console.error('Authorization Code 전송 중 오류:', error);
     },
   });
+};
 
-  return mutation;
+export const useLogout = () => {
+  const [logout] = useAuthStore(useShallow((state) => [state.logout]));
+  const router = useRouter();
+  return useMutation({
+    mutationFn: () => fetchLogout(),
+    onSuccess: () => {
+      alert('로그아웃');
+      logout();
+      router.push('/');
+    },
+  });
 };
