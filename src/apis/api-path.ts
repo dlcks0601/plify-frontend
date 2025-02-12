@@ -1,4 +1,6 @@
 export const API_PATH = {
-  login: '/auth/login',
+  login: '/auth/:provider/callback',
   signup: '/auth/signup',
+  spotifyCallback: '/auth/spotify/callback',
+  spotifyUserInfo: '/auth/spotify/userinfo',
 };
