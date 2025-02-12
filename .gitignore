@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ignore SSL certificate and key files
+localhost.pem
+localhost-key.pem
