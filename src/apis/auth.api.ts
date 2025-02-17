@@ -55,7 +55,7 @@ export const postAuthorizationCode = async ({
     const response = await axios.post<AuthResponse>(
       `${baseURL}${apiPath}`,
       { code: authorizationCode },
-      { withCredentials: true } // 여기서 옵션 객체를 전달
+      { withCredentials: true }
     );
     return response.data;
   } catch (error) {
