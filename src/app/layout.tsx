@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Providers from './Providers'; // ✅ 클라이언트 Provider 추가
-import TopNav from './components/Common/TopNavigation/TopNav';
+import TopNav from './components/Common/layouts/TopNav';
+import Providers from './Providers';
+import DesktopTopNav from './components/Common/layouts/DesktopTopNav';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,8 +16,8 @@ export default function RootLayout({
     <html lang='en'>
       <body className='flex flex-col min-h-screen'>
         <Providers>
-          <TopNav />
-          {children}
+          <DesktopTopNav />
+          <main>{children}</main>
         </Providers>
       </body>
     </html>
