@@ -19,6 +19,7 @@ export default function LoginForm() {
     login({ email, password }).then(({ user, accessToken }) => {
       setLogin(user, accessToken);
       alert('로그인 완료');
+      console.log('일반 로그인 완료');
       router.push('/');
     });
   };

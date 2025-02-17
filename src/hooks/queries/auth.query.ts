@@ -14,16 +14,16 @@ export const useAuthMutation = (): UseMutationResult<
   }
 > => {
   const router = useRouter();
+
   const { login } = useAuthStore();
 
   return useMutation({
     mutationFn: ({ authorizationCode, provider }) =>
       postAuthorizationCode({ authorizationCode, provider }),
     onSuccess: async (data) => {
-      const { accessToken, user, isExistingUser } = data;
+      const { accessToken, user } = data;
       await login(user, accessToken);
 
-      router.prefetch('/');
       router.push('/');
     },
     onError: (error) => {
