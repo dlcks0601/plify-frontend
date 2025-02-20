@@ -27,51 +27,47 @@ export default function SignupForm() {
   };
 
   return (
-    <div className='min-h-screen flex items-center justify-center bg-gray-100'>
-      <form
-        onSubmit={handleSubmit}
-        className='w-full max-w-md p-6 bg-white rounded shadow-md'
-      >
-        <h2 className='text-2xl font-bold mb-4 text-center'>회원가입</h2>
-
+    <form
+      onSubmit={handleSubmit}
+      className='flex flex-col items-center gap-[40px] w-[384px]'
+    >
+      <div className='flex text-7xl font-extrabold blur-[2px]'>PLIFY</div>
+      <div className='flex flex-col gap-[30px] w-full'>
         <input
           type='email'
-          placeholder='이메일'
+          placeholder='Email'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className='w-full p-3 mb-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400'
+          className='flex flex-col border rounded-2xl focus:outline-none focus:ring-1 focus:ring-black p-[10px]'
           required
         />
 
         <input
           type='text'
-          placeholder='닉네임'
+          placeholder='Nickname'
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
-          className='w-full p-3 mb-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400'
+          className='flex flex-col border rounded-2xl focus:outline-none focus:ring-1 focus:ring-black p-[10px]'
           required
         />
 
         <input
           type='password'
-          placeholder='비밀번호'
+          placeholder='Password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className='w-full p-3 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400'
+          className='flex flex-col border rounded-2xl focus:outline-none focus:ring-1 focus:ring-black p-[10px]'
           required
         />
-
-        {error && (
-          <p className='text-red-500 text-sm mb-3 text-center'>{error}</p>
-        )}
-
+      </div>
+      <div className='flex flex-col w-full gap-[20px]'>
         <button
           type='submit'
-          className='w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200'
+          className='flex w-full rounded-2xl bg-[#EFEFEF] p-[10px] justify-center text-[#555555]'
         >
-          회원가입
+          Signup
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 }
