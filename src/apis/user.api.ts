@@ -17,7 +17,6 @@ export const fetchTopTracks = async (accessToken: string): Promise<Track[]> => {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-    // 기본적으로 fetch는 credentials를 포함하지 않으므로 CORS 이슈를 피할 수 있음
   });
 
   if (!response.ok) {
