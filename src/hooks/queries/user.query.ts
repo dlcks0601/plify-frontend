@@ -1,3 +1,4 @@
+import { playPlaylist } from '@/apis/spotify.api';
 import {
   Artist,
   fetchMyPlaylists,
@@ -7,7 +8,7 @@ import {
   Track,
 } from '@/apis/user.api';
 import useAuthStore from '@/store/authStore';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useTopTracks = () => {
   const { accessToken, isLoggedIn } = useAuthStore();
