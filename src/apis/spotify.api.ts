@@ -1,137 +1,78 @@
+import { spotifyRequest } from '@/lib/spotifyRequest';
+
+// 재생 함수 (특정 디바이스 지정)
 export const play = async (deviceId: string, accessToken: string) => {
-  const response = await fetch(
-    `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
-    {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-  if (!response.ok) {
-    throw new Error('Failed to play track');
-  }
-  return response;
+  return await spotifyRequest('me/player/play', 'PUT', accessToken, {
+    query: { device_id: deviceId },
+  });
 };
-
+// 일시정지 함수
 export const pause = async (accessToken: string) => {
-  const response = await fetch('https://api.spotify.com/v1/me/player/pause', {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  if (!response.ok) {
-    throw new Error('Failed to pause track');
-  }
-  return response;
+  return await spotifyRequest('me/player/pause', 'PUT', accessToken);
 };
 
+// 다음 트랙으로 넘기기
 export const nextTrack = async (accessToken: string) => {
-  const response = await fetch('https://api.spotify.com/v1/me/player/next', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error('Failed to skip to next track');
-  }
-  return response;
+  return await spotifyRequest('me/player/next', 'POST', accessToken);
 };
 
+// 이전 트랙으로 넘기기
 export const prevTrack = async (accessToken: string) => {
-  const response = await fetch(
-    'https://api.spotify.com/v1/me/player/previous',
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
-  if (!response.ok) {
-    throw new Error('Failed to skip to previous track');
-  }
-  return response;
+  return await spotifyRequest('me/player/previous', 'POST', accessToken);
 };
 
+// 현재 재생중인 트랙 가져오기
 export async function getCurrentTrack(accessToken: string) {
-  const response = await fetch(
-    'https://api.spotify.com/v1/me/player/currently-playing',
-    {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    }
+  const response = await spotifyRequest(
+    'me/player/currently-playing',
+    'GET',
+    accessToken
   );
-
-  if (response.status === 204) {
-    return null;
-  }
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch current track: ${response.status}`);
-  }
-
   const data = await response.json();
-  return data.item;
+
+  // 필요한 데이터만 추출해서 반환합니다.
+  return {
+    item: data.item,
+    timestamp: data.timestamp,
+    progress_ms: data.progress_ms,
+    currently_playing_type: data.currently_playing_type,
+  };
 }
 
+// 특정 위치로 탐색 (Seek)
 export const seekTrack = async (positionMs: number, accessToken: string) => {
-  const response = await fetch(
-    `https://api.spotify.com/v1/me/player/seek?position_ms=${positionMs}`,
-    {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error('Failed to seek track');
-  }
+  return await spotifyRequest('me/player/seek', 'PUT', accessToken, {
+    query: { position_ms: positionMs.toString() },
+  });
 };
 
+// 볼륨 조절 함수
 export const setSpotifyVolume = async (volume: number, accessToken: string) => {
-  const response = await fetch(
-    `https://api.spotify.com/v1/me/player/volume?volume_percent=${volume}`,
-    {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-  if (!response.ok) {
-    throw new Error('Failed to set volume');
-  }
+  return await spotifyRequest('me/player/volume', 'PUT', accessToken, {
+    query: { volume_percent: volume.toString() },
+  });
 };
 
+// 플레이리스트 재생 함수
 export const playPlaylist = async (
   deviceId: string,
   accessToken: string,
   playlistId: string
 ) => {
-  const response = await fetch(
-    `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
-    {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        context_uri: `spotify:playlist:${playlistId}`,
-      }),
-    }
-  );
+  await spotifyRequest('me/player/play', 'PUT', accessToken, {
+    query: { device_id: deviceId },
+    body: { context_uri: `spotify:playlist:${playlistId}` },
+  });
+  return { playlistId };
+};
 
-  if (!response.ok) {
-    throw new Error('Failed to play playlist');
-  }
-
-  return response;
+// 디바이스 변경
+export const transferPlayback = async (
+  deviceId: string,
+  accessToken: string,
+  play: boolean = false
+) => {
+  return await spotifyRequest('me/player', 'PUT', accessToken, {
+    body: { device_ids: [deviceId], play },
+  });
 };
