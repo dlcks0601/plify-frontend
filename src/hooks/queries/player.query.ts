@@ -96,15 +96,15 @@ export function useCurrentTrackQuery() {
   const { accessToken } = useAuthStore();
 
   return useQuery({
-    queryKey: ['currentTrack'],
-    queryFn: () => {
+    queryKey: ['currentTrack', accessToken],
+    queryFn: async () => {
       if (!accessToken) {
         throw new Error('No access token');
       }
-      return getCurrentTrack(accessToken);
+      return await getCurrentTrack(accessToken);
     },
     refetchInterval: 1000,
-    enabled: !!accessToken,
+    enabled: Boolean(accessToken),
   });
 }
 
@@ -130,7 +130,7 @@ export const useSeekMutation = () => {
 
 export const useSetVolumeMutation = () => {
   const { accessToken } = useAuthStore();
-  return useMutation<void, Error, number>({
+  return useMutation({
     mutationFn: (volume: number) => {
       if (!accessToken) throw new Error('No access token');
       return setSpotifyVolume(volume, accessToken);
@@ -138,16 +138,23 @@ export const useSetVolumeMutation = () => {
   });
 };
 
-export const usePlayPlaylistMutation = () => {
+export const usePlaylistMutation = () => {
   const { accessToken } = useAuthStore();
   const { deviceId } = useSpotifyPlayer();
+  const setIsPlaying = usePlayerStore((state) => state.setIsPlaying);
 
   return useMutation({
     mutationFn: async (playlistId: string) => {
       if (!accessToken) throw new Error('No access token available.');
       if (!deviceId) throw new Error('No device ID available.');
-
       return playPlaylist(deviceId, accessToken, playlistId);
+    },
+    onSuccess: ({ playlistId }) => {
+      setIsPlaying(true);
+      console.log(`✅ Playlist ${playlistId} is now playing!`);
+    },
+    onError: (error) => {
+      console.error('❌ Failed to play playlist:', error);
     },
   });
 };

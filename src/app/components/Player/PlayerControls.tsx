@@ -29,7 +29,8 @@ import { useTheme } from 'next-themes';
 export default function SpotifyPlayer() {
   const { theme } = useTheme();
   // 현재 재생 곡 정보
-  const { data: track, isLoading, error } = useCurrentTrackQuery();
+  const { data: playbackData, isLoading, error } = useCurrentTrackQuery();
+  const track = playbackData?.item;
 
   // 재생 상태 (Zustand)
   const { isPlaying } = usePlayerStore();
@@ -51,24 +52,32 @@ export default function SpotifyPlayer() {
   // 재생 시간(진행도) 상태 (밀리초 단위)
   const [progress, setProgress] = useState<number>(0);
 
-  // 곡이 바뀌었을 때 progress 초기화
+  // track이 변경되었을 때 초기 progress를 API의 progress_ms 값으로 설정
   useEffect(() => {
-    if (track) {
-      setProgress(0);
-      setTimeout(() => setProgress(track.progress_ms ?? 0), 100);
+    if (playbackData) {
+      setProgress(playbackData.progress_ms);
     }
-  }, [track?.id]);
+  }, [playbackData?.item?.id, playbackData?.progress_ms]);
 
-  // 재생 중이면 매 초마다 progress 증가
+  // 재생 상태(isPlaying)가 true일 때만 1초마다 progress를 1000ms씩 증가시킴
   useEffect(() => {
-    if (!isPlaying || !track) return;
+    if (!playbackData || !track || !isPlaying) return;
+
+    // 초기 progress 값을 로컬 변수에 저장
+    let currentProgress = playbackData.progress_ms;
+    setProgress(currentProgress);
+
     const interval = setInterval(() => {
-      setProgress((prev) =>
-        prev >= track.duration_ms ? track.duration_ms : prev + 1000
+      currentProgress += 1000; // 1초마다 1000ms씩 증가
+      setProgress(
+        currentProgress > track.duration_ms
+          ? track.duration_ms
+          : currentProgress
       );
     }, 1000);
+
     return () => clearInterval(interval);
-  }, [isPlaying, track?.id]);
+  }, [playbackData, track?.id, track?.duration_ms, isPlaying]);
 
   // 진행도 슬라이더 변경 시 로컬 progress 업데이트
   const handleProgressChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -106,7 +115,7 @@ export default function SpotifyPlayer() {
   return (
     <div className='flex px-[8px] py-[8px] text-black dark:text-white'>
       <div className='flex gap-[20px] w-full justify-between'>
-        <div className='flex items-center gap-[12px]'>
+        <div className='flex items-center w-[300px] gap-[12px]'>
           <img
             src={track.album.images[0]?.url}
             alt={track.name}

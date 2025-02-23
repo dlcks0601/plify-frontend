@@ -7,28 +7,21 @@ import {
   useTopTracks,
 } from '@/hooks/queries/user.query';
 import useAuthStore from '@/store/authStore';
-import { usePlayPlaylistMutation } from '@/hooks/queries/player.query';
+import { usePlaylistMutation } from '@/hooks/queries/player.query';
 
 export default function MyPage() {
   const { data: topTracks } = useTopTracks();
   const { data: topArtist } = useTopArtist();
   const { data: myPlaylist } = useMyPlaylist();
   const { userInfo } = useAuthStore();
-  const playPlaylistMutation = usePlayPlaylistMutation();
+  const { mutate: playPlaylist } = usePlaylistMutation();
 
   const handlePlayPlaylist = (playlistId: string) => {
-    playPlaylistMutation.mutate(playlistId, {
-      onSuccess: () => {
-        console.log(`✅ Playlist ${playlistId} is now playing!`);
-      },
-      onError: (error) => {
-        console.error('❌ Failed to play playlist:', error);
-      },
-    });
+    playPlaylist(playlistId);
   };
 
   return (
-    <div className='flex flex-col p-[10px] gap-[20px]'>
+    <div className='flex flex-col p-4 gap-[20px]'>
       <div className='flex items-center gap-4'>
         <Image
           src={userInfo.profileUrl || '/default-profile.png'} // 기본 이미지 추가
@@ -44,7 +37,7 @@ export default function MyPage() {
 
       <div className='flex flex-col gap-[20px]'>
         <div className='text-[80px] font-bold'>Most Played Songs</div>
-        <div className='flex gap-[20px]'>
+        <div className='grid grid-cols-4 gap-[20px]'>
           {topTracks?.map((track) => (
             <div key={track.rank} className='flex'>
               <div className='flex flex-col w-full gap-[10px]'>
@@ -56,7 +49,7 @@ export default function MyPage() {
                   className='object-cover rounded'
                 />
                 <div className='flex flex-col'>
-                  <div className='flex font-extrabold text-[24px]'>
+                  <div className='flex font-bold text-[24px]'>
                     {track.title}
                   </div>
                   <div className='flex font-light text-[18px] text-[#9F9F9F]'>
@@ -71,7 +64,7 @@ export default function MyPage() {
 
       <div className='flex flex-col gap-[20px]'>
         <div className='text-[80px] font-bold'>Favorite Artists</div>
-        <div className='flex gap-[20px]'>
+        <div className='grid grid-cols-4 gap-[20px]'>
           {topArtist?.map((artist) => (
             <div key={artist.rank} className='flex'>
               <div className='flex flex-col w-full gap-[10px]'>
@@ -80,9 +73,9 @@ export default function MyPage() {
                   alt={artist.artist}
                   width={300}
                   height={300}
-                  className='object-cover rounded aspect-square'
+                  className='object-cover rounded-full aspect-square'
                 />
-                <div className='flex font-extrabold text-[24px] '>
+                <div className='flex font-bold text-[24px] '>
                   {artist.artist}
                 </div>
               </div>
@@ -109,11 +102,8 @@ export default function MyPage() {
                   className='object-cover rounded'
                 />
                 <div className='flex flex-col'>
-                  <div className='flex font-extrabold text-[24px]'>
+                  <div className='flex font-bold text-[24px]'>
                     {playlist.name}
-                  </div>
-                  <div className='flex font-light text-[18px] text-[#9F9F9F]'>
-                    {userInfo.nickname}
                   </div>
                 </div>
               </div>
