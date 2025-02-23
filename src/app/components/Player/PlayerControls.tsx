@@ -123,7 +123,7 @@ export default function SpotifyPlayer() {
           />
           <div className='flex flex-col'>
             <div className='flex'>
-              <p className='flex text-lg font-light'>{track.name}</p>
+              <p className='flex text-md font-light'>{track.name}</p>
             </div>
 
             <div className='flex'>
