@@ -104,21 +104,21 @@ export default function SpotifyPlayer() {
   if (!track) return <p className='p-4'>🎵 No song playing...</p>;
 
   return (
-    <div className='flex p-4 text-black dark:text-white'>
+    <div className='flex px-[8px] py-[8px] text-black dark:text-white'>
       <div className='flex gap-[20px] w-full justify-between'>
         <div className='flex items-center gap-[12px]'>
           <img
             src={track.album.images[0]?.url}
             alt={track.name}
-            className='w-16 h-16 rounded-lg object-cover'
+            className='w-12 h-12 rounded-lg object-cover'
           />
           <div className='flex flex-col'>
             <div className='flex'>
-              <p className='flex text-lg font-light'>{track.name}</p>
+              <p className='flex text-s font-light'>{track.name}</p>
             </div>
 
             <div className='flex'>
-              <p className='flex text-sm font-light text-[#9F9F9F]'>
+              <p className='flex text-xs font-light text-[#9F9F9F]'>
                 {track.artists.map((artist: any) => artist.name).join(', ')}
               </p>
             </div>
@@ -128,7 +128,7 @@ export default function SpotifyPlayer() {
           <div className='flex gap-[10px]'>
             <button
               onClick={() => prevMutation.mutate()}
-              className='text-3xl text-gray-300 hover:text-white'
+              className='text-2xl text-gray-300 hover:text-white'
             >
               <IoPlaySkipBackSharp />
             </button>
@@ -136,14 +136,14 @@ export default function SpotifyPlayer() {
             {isPlaying ? (
               <button
                 onClick={() => pauseMutation.mutate()}
-                className='text-5xl'
+                className='text-4xl'
               >
                 <MdOutlinePauseCircleFilled />
               </button>
             ) : (
               <button
                 onClick={() => playMutation.mutate()}
-                className='text-5xl'
+                className='text-4xl'
               >
                 <MdOutlinePlayCircleFilled />
               </button>
@@ -151,18 +151,18 @@ export default function SpotifyPlayer() {
 
             <button
               onClick={() => nextMutation.mutate()}
-              className='text-3xl text-gray-300 hover:text-white'
+              className='text-2xl text-gray-300 hover:text-white'
             >
               <IoPlaySkipForwardSharp />
             </button>
           </div>
           <div className='flex items-center gap-[10px] w-full'>
-            <span className='text-sm w-12 text-right'>
+            <span className='text-xs w-12 text-right'>
               {formatTime(progress)}
             </span>
             <input
               type='range'
-              className='w-full h-2 rounded-full appearance-none cursor-pointer
+              className='w-full h-1.5 rounded-full appearance-none cursor-pointer
                 bg-gray-700 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-gray-700 
                 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-0 [&::-webkit-slider-thumb]:h-0 
                 [&::-moz-range-thumb]:appearance-none'
@@ -179,7 +179,7 @@ export default function SpotifyPlayer() {
                 }%, gray 0%)`,
               }}
             />
-            <span className='text-sm w-12 text-left'>
+            <span className='text-xs w-12 text-left'>
               {formatTime(track.duration_ms)}
             </span>
           </div>
@@ -188,14 +188,14 @@ export default function SpotifyPlayer() {
         <div className='flex items-center gap-[10px]'>
           <div onClick={toggleMute} className='cursor-pointer'>
             {volume > 0 ? (
-              <IoVolumeHigh className='text-2xl' />
+              <IoVolumeHigh className='text-l' />
             ) : (
-              <IoVolumeMute className='text-2xl' />
+              <IoVolumeMute className='text-l' />
             )}
           </div>
           <input
             type='range'
-            className='w-full h-2 rounded-full appearance-none cursor-pointer
+            className='w-full h-1.5 rounded-full appearance-none cursor-pointer
               bg-gray-700 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-gray-700 
               [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-0 [&::-webkit-slider-thumb]:h-0 
               [&::-moz-range-thumb]:appearance-none'
