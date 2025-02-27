@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import './globals.css';
+import '../ui/globals.css';
 import Providers from './components/Providers/Providers';
 import DesktopTopNav from './components/Common/layouts/DesktopTopNav';
 import ThemeProvider from './components/Providers/ThemeProvider';
