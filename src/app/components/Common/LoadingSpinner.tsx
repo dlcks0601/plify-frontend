@@ -1,8 +1,7 @@
-// components/LoadingSpinner.tsx
 'use client';
 
 import React from 'react';
-import '../../../styles/LoadingSpinner.css';
+import '../../../ui/LoadingSpinner.css';
 
 export default function LoadingSpinner() {
   return (
