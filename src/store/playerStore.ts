@@ -1,18 +1,19 @@
+import { PlayerAction, PlayerState } from '@/types/player.type';
 import { create } from 'zustand';
+import { combine } from 'zustand/middleware';
 
-interface PlayerState {
-  isPlaying: boolean;
-  setIsPlaying: (isPlaying: boolean) => void;
-  progress: number;
-  setProgress: (progress: number) => void;
-}
-
-export const usePlayerStore = create<PlayerState>((set) => ({
-  isPlaying: false,
-  setIsPlaying: (isPlaying) => set({ isPlaying }),
-  progress: 0,
-  setProgress: (progress) => set({ progress }),
-}));
+export const usePlayerStore = create(
+  combine<PlayerState, PlayerAction>(
+    {
+      isPlaying: false,
+      progress: 0,
+    },
+    (set) => ({
+      setIsPlaying: (isPlaying: boolean) => set({ isPlaying }),
+      setProgress: (progress: number) => set({ progress }),
+    })
+  )
+);
 
 interface DeviceState {
   deviceId: string | null;
