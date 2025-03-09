@@ -6,7 +6,7 @@ type ThemeState = {
 };
 
 export const useThemeStore = create<ThemeState>((set) => ({
-  theme: 'light', // 기본값을 명확히 설정
+  theme: 'dark',
   toggleTheme: () =>
     set((state) => {
       const newTheme = state.theme === 'light' ? 'dark' : 'light';
