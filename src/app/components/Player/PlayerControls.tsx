@@ -23,52 +23,41 @@ import {
   useSetVolumeMutation,
 } from '@/hooks/queries/player.query';
 import { usePlayerStore } from '@/store/playerStore';
-import { formatTime } from '@/hooks/useSpotifyPlayer';
+
 import { useTheme } from 'next-themes';
+import { formatTime } from '@/constants/playerFormatTime';
 
 export default function SpotifyPlayer() {
   const { theme } = useTheme();
-  // 현재 재생 곡 정보
   const { data: playbackData, isLoading, error } = useCurrentTrackQuery();
   const track = playbackData?.item;
-
-  // 재생 상태 (Zustand)
   const { isPlaying } = usePlayerStore();
-
   const playColor = theme === 'dark' ? 'white' : 'black';
-
-  // 로컬 볼륨 상태 (0 ~ 100)
   const [volume, setVolume] = useState<number>(50);
-  // 볼륨 조절 API mutation
   const setVolumeMutation = useSetVolumeMutation();
 
-  // 플레이어 제어 (React Query Mutation)
   const playMutation = usePlayMutation();
   const pauseMutation = usePauseMutation();
   const nextMutation = useNextTrackMutation();
   const prevMutation = usePrevTrackMutation();
   const seekMutation = useSeekMutation();
 
-  // 재생 시간(진행도) 상태 (밀리초 단위)
   const [progress, setProgress] = useState<number>(0);
 
-  // track이 변경되었을 때 초기 progress를 API의 progress_ms 값으로 설정
   useEffect(() => {
     if (playbackData) {
       setProgress(playbackData.progress_ms);
     }
   }, [playbackData?.item?.id, playbackData?.progress_ms]);
 
-  // 재생 상태(isPlaying)가 true일 때만 1초마다 progress를 1000ms씩 증가시킴
   useEffect(() => {
     if (!playbackData || !track || !isPlaying) return;
 
-    // 초기 progress 값을 로컬 변수에 저장
     let currentProgress = playbackData.progress_ms;
     setProgress(currentProgress);
 
     const interval = setInterval(() => {
-      currentProgress += 1000; // 1초마다 1000ms씩 증가
+      currentProgress += 1000;
       setProgress(
         currentProgress > track.duration_ms
           ? track.duration_ms
@@ -79,24 +68,20 @@ export default function SpotifyPlayer() {
     return () => clearInterval(interval);
   }, [playbackData, track?.id, track?.duration_ms, isPlaying]);
 
-  // 진행도 슬라이더 변경 시 로컬 progress 업데이트
   const handleProgressChange = (e: ChangeEvent<HTMLInputElement>) => {
     setProgress(Number(e.target.value));
   };
 
-  // 드래그 완료 후 Seek API 호출
   const handleSeek = (positionMs: number) => {
     seekMutation.mutate(positionMs);
   };
 
-  // 볼륨 슬라이더 변경 시, 로컬 상태 업데이트 후 API 호출
   const handleVolumeChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newVolume = Number(e.target.value);
     setVolume(newVolume);
     setVolumeMutation.mutate(newVolume);
   };
 
-  // 볼륨 음소거/해제 토글 핸들러
   const toggleMute = () => {
     if (volume > 0) {
       setVolume(0);
@@ -107,7 +92,6 @@ export default function SpotifyPlayer() {
     }
   };
 
-  // 로딩/에러 처리
   if (isLoading) return <p className='p-4'>Loading current track...</p>;
   if (error) return <p className='p-4'>Failed to load current track.</p>;
   if (!track) return <p className='p-4'>🎵 No song playing...</p>;

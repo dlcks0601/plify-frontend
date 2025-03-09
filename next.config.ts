@@ -1,5 +1,5 @@
 const nextConfig = {
-  reactStrictMode: false, // React Strict Mode 비활성화
+  reactStrictMode: false,
   images: {
     domains: [
       'i.scdn.co',

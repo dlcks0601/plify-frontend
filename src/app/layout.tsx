@@ -18,14 +18,12 @@ export default function RootLayout({
       <body className='flex flex-col min-h-screen bg-white dark:bg-black text-black dark:text-white'>
         <ThemeProvider>
           <Providers>
-            {/* 상단 sticky: DesktopTopNav */}
             <div className='sticky top-0 z-50 backdrop-blur-md'>
               <DesktopTopNav />
             </div>
             <main className='flex-grow bg-white dark:bg-black text-black dark:text-white'>
               {children}
             </main>
-            {/* 하단 sticky: PlayerWrapper */}
             <div className='sticky bottom-0 z-50  backdrop-blur-md'>
               <PlayerWrapper />
             </div>

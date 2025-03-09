@@ -24,7 +24,7 @@ export default function MyPage() {
     <div className='flex flex-col p-4 gap-[20px]'>
       <div className='flex items-center gap-4'>
         <Image
-          src={userInfo.profileUrl || '/default-profile.png'} // 기본 이미지 추가
+          src={userInfo.profileUrl || '/default-profile.png'}
           alt='User Profile'
           width={200}
           height={200}
@@ -86,7 +86,7 @@ export default function MyPage() {
 
       <div className='flex flex-col gap-[20px]'>
         <div className='text-[80px] font-bold'>My Playlist</div>
-        <div className='flex gap-[20px]'>
+        <div className='grid grid-cols-4 gap-[20px]'>
           {myPlaylist?.map((playlist) => (
             <div
               key={playlist.number}

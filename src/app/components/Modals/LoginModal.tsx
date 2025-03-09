@@ -33,11 +33,11 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
   return createPortal(
     <div
       className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]'
-      onClick={onClose} // 회색 배경 클릭 시 모달 닫기
+      onClick={onClose}
     >
       <div
         className='bg-white dark:bg-white flex flex-col px-[64px] py-[60px] gap-[30px] rounded-3xl w-[500px] h-auto'
-        onClick={(e) => e.stopPropagation()} // 내부 클릭 시 모달 닫히지 않도록 설정
+        onClick={(e) => e.stopPropagation()}
       >
         <div className='flex flex-col gap-[20px]'>
           <div className='flex items-center justify-center text-4xl font-extrabold blur-[1px] text-black'>
