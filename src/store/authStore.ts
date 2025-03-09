@@ -28,6 +28,7 @@ const useAuthStore = create(
         (set) => ({
           setAccessToken: (token: string) => {
             set({ accessToken: token, isLoggedIn: !!token });
+            sessionStorage.setItem('@token', token);
           },
           login: (user: User, token: string) => {
             set({
@@ -50,7 +51,6 @@ const useAuthStore = create(
                 userId: 0,
               },
             });
-            sessionStorage.removeItem('auth-storage');
             sessionStorage.removeItem('@token');
           },
           setHydrated: () => {
