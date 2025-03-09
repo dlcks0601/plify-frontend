@@ -8,7 +8,6 @@ import LoadingSpinner from '@/app/components/Common/LoadingSpinner';
 export default function OAuthCallbackPage() {
   const searchParams = useSearchParams();
   const params = useParams();
-  const router = useRouter();
 
   const provider =
     typeof params.provider === 'string'
