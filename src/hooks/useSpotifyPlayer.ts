@@ -3,17 +3,17 @@
 import { transferPlayback } from '@/apis/spotify.api';
 import useAuthStore from '@/store/authStore';
 import { useDeviceStore } from '@/store/playerStore';
+import { userInfo } from 'os';
 import { useEffect, useState } from 'react';
 
 export const useSpotifyPlayer = () => {
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
   const { deviceId, setDeviceId } = useDeviceStore();
-  const { accessToken } = useAuthStore();
+  const { accessToken, userInfo } = useAuthStore();
 
   useEffect(() => {
     if (!accessToken) return;
 
-    // 플레이어 생성 되었는지 확인
     if (!window.Spotify) {
       const script = document.createElement('script');
       script.src = 'https://sdk.scdn.co/spotify-player.js';
@@ -21,7 +21,6 @@ export const useSpotifyPlayer = () => {
       document.body.appendChild(script);
     }
 
-    // 플레이어 생성
     window.onSpotifyWebPlaybackSDKReady = () => {
       const player = new window.Spotify.Player({
         name: 'Plify',
@@ -30,9 +29,9 @@ export const useSpotifyPlayer = () => {
       });
 
       player.addListener('ready', ({ device_id }) => {
-        console.log('Spotify Player Ready with Device ID', device_id);
-        setDeviceId(device_id); //디바이스 id 전역상태관리
-        transferPlayback(device_id, accessToken); // 디바이스 변경
+        console.log('💻 spotify device Id: ', device_id);
+        setDeviceId(device_id);
+        transferPlayback(device_id, accessToken);
       });
 
       player.addListener('not_ready', ({ device_id }) => {
@@ -53,7 +52,7 @@ export const useSpotifyPlayer = () => {
 
       player.connect().then((success) => {
         if (success) {
-          console.log('🎵 Plify connected!!');
+          console.log(`🎵 Hello ${userInfo.name}`);
         }
       });
 
@@ -62,10 +61,4 @@ export const useSpotifyPlayer = () => {
   }, [accessToken]);
 
   return { player, deviceId };
-};
-
-export const formatTime = (ms: number) => {
-  const minutes = Math.floor(ms / 60000);
-  const seconds = Math.floor((ms % 60000) / 1000);
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 };
