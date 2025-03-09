@@ -3,4 +3,6 @@ export const API_PATH = {
   signup: '/auth/signup',
   spotifyCallback: '/auth/spotify/callback',
   spotifyUserInfo: '/auth/spotify/userinfo',
+  playlists: '/playlists',
+  playlistLike: '/playlists/:postId/like',
 };
