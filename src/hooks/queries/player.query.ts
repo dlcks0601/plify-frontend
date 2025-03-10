@@ -10,6 +10,7 @@ import {
   seekTrack,
   setSpotifyVolume,
   playPlaylist,
+  playAlbum,
 } from '@/apis/spotify.api';
 import { usePlayerStore } from '@/store/playerStore';
 import useAuthStore from '@/store/authStore';
@@ -152,6 +153,27 @@ export const usePlaylistMutation = () => {
     onSuccess: ({ playlistId }) => {
       setIsPlaying(true);
       console.log(`✅ Playlist ${playlistId} is now playing!`);
+    },
+    onError: (error) => {
+      console.error('❌ Failed to play playlist:', error);
+    },
+  });
+};
+
+export const useAlbumMutation = () => {
+  const { accessToken } = useAuthStore();
+  const { deviceId } = useSpotifyPlayer();
+  const setIsPlaying = usePlayerStore((state) => state.setIsPlaying);
+
+  return useMutation({
+    mutationFn: async (albumId: string) => {
+      if (!accessToken) throw new Error('No access token available.');
+      if (!deviceId) throw new Error('No device ID available.');
+      return playAlbum(deviceId, accessToken, albumId);
+    },
+    onSuccess: ({ albumId }) => {
+      setIsPlaying(true);
+      console.log(`✅ Playlist ${albumId} is now playing!`);
     },
     onError: (error) => {
       console.error('❌ Failed to play playlist:', error);
