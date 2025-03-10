@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+    <img src='public/plify.png' alt="plify"/><br>
 
-## Getting Started
+</div>
 
-First, run the development server:
+## 🎵 Plify : 스포티파이 플레이리스트 공유 플랫폼
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 나만 듣기 아쉬운 플레이리스트, 이제 함께 들어요!
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Spotify에서 만든 나만의 플레이리스트, 혼자 듣기엔 아깝지 않으셨나요?
+Plify에서 다른 사람들과 플레이리스트를 공유하고, 댓글로 소통하며 음악 취향을 나눠보세요.
+새로운 음악도 발견하고, 취향이 맞는 친구도 만날 수 있어요!
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 👩🏻‍💻 간편한 Spotify 로그인
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+![간편 로그인](./public/plifyintroduce.gif)
 
-## Learn More
+복잡한 가입 절차 없이 Spotify 계정으로 간편하게 로그인하세요.  
+로그인 후 바로 Plify의 모든 기능을 편리하게 이용할 수 있습니다.
 
-To learn more about Next.js, take a look at the following resources:
+### 🎧 Spotify와 실시간 연동
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![Spotify 연동](./public/spotifyplayer.gif)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Spotify 계정으로 로그인하면,  
+현재 듣고 있던 음악을 그대로 Plify에서 이어서 감상할 수 있습니다.  
+실시간 연동으로 더욱 편리한 음악 경험을 누려보세요!
 
-## Deploy on Vercel
+### 🎧 플레이리스트 발견하기
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![플레이리스트 발견](./public/playlistplify.gif)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+매일 듣던 음악이 지겨워졌다면, 다양한 플레이리스트를 탐색해보세요.  
+플레이 버튼만 누르면 바로 플레이리스트가 재생됩니다. 플레이리스트가 좋다면 댓글을 남겨보세요.
+
+### 🚀 플레이리스트 공유하기
+
+![플레이리스트 공유](./public/helloplify.gif)
+
+나만 알고 있긴 아까운 나의 플레이리스트를 공유해보세요. Spotify에서 만든 플레이리스트를 Plify에서 손쉽게 공유하세요.
+
+## ⚒️ Tech Spec.
+
+### 📌 Frontend
+
+- **Framework:** Next.js 15
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **State Management:** Zustand
+- **Data Fetching:** React Query
+- **Package Manager:** pnpm
+
+### 📌 Backend
+
+- **Framework:** NestJS
+- **Language:** TypeScript
+
+### 📌 외부 서비스
+
+- **Spotify API**
