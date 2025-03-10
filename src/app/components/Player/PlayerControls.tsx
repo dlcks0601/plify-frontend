@@ -92,9 +92,9 @@ export default function SpotifyPlayer() {
     }
   };
 
-  if (isLoading) return <p className='p-4'>Loading current track...</p>;
-  if (error) return <p className='p-4'>Failed to load current track.</p>;
-  if (!track) return <p className='p-4'>🎵 No song playing...</p>;
+  if (isLoading) return <p className='p-4'></p>;
+  if (error) return <p className='p-4'></p>;
+  if (!track) return <p className='p-4'>🎵</p>;
 
   return (
     <div className='flex px-[8px] py-[8px] text-black dark:text-white'>
