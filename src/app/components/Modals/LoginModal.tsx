@@ -36,7 +36,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
       onClick={onClose}
     >
       <div
-        className='bg-white dark:bg-white flex flex-col px-[64px] py-[60px] gap-[30px] rounded-3xl w-[500px] h-auto'
+        className='bg-white dark:bg-white flex flex-col px-[64px] py-[60px] gap-[40px] rounded-3xl w-[500px] h-auto'
         onClick={(e) => e.stopPropagation()}
       >
         <div className='flex flex-col gap-[20px]'>
@@ -53,20 +53,23 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
           <div className='flex px-[14px] py-[6px] rounded-3xl bg-green-200 text-green-800 w-auto'>
             가장 많이 들은 곡을 알고싶어요.
           </div>
+          <div className='flex px-[14px] py-[6px] rounded-3xl bg-yellow-100 text-yellow-600 w-auto'>
+            가장 많이 들은 가수를 알고싶어요.
+          </div>
           <div className='flex px-[14px] py-[6px] rounded-3xl bg-blue-200 text-blue-800'>
             플레이리스트를 공유하고 싶어요.
           </div>
-          <div className='flex px-[14px] py-[6px] rounded-3xl bg-red-200 text-red-800'>
+          {/* <div className='flex px-[14px] py-[6px] rounded-3xl bg-red-200 text-red-800'>
             음악 매거진을 보고싶어요.
           </div>
           <div className='flex px-[14px] py-[6px] rounded-3xl bg-gray-300 text-gray-800'>
             음악 리뷰를 남기고싶어요.
-          </div>
+          </div> */}
         </div>
-        <div className='flex flex-col justify-center w-full gap-[20px] font-light text-[14px]'>
+        <div className='flex flex-col justify-center w-full gap-[20px] font-light text-[14px] px-[30px]'>
           <button
             onClick={handleSpotifyLogin}
-            className='flex bg-black text-white rounded-2xl items-center justify-center py-[6px] px-[100px]'
+            className='flex bg-black text-white rounded-2xl items-center justify-center py-[6px] px-[60px]'
           >
             <Image
               src='/icons/spotify.svg'
@@ -77,7 +80,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
             />
             Spotify 계정으로 로그인
           </button>
-
+          {/* 
           <button
             onClick={handleEmailLogin}
             className='flex bg-[#EFEFEF] text-black rounded-2xl items-center justify-center py-[6px] px-[100px]'
@@ -90,7 +93,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
               className='mr-2'
             />
             이메일 계정으로 로그인
-          </button>
+          </button> */}
         </div>
       </div>
     </div>,
