@@ -62,6 +62,18 @@ export const playPlaylist = async (
   return { playlistId };
 };
 
+export const playAlbum = async (
+  deviceId: string,
+  accessToken: string,
+  albumId: string
+) => {
+  await spotifyRequest('me/player/play', 'PUT', accessToken, {
+    query: { device_id: deviceId },
+    body: { context_uri: `spotify:album:${albumId}` },
+  });
+  return { albumId };
+};
+
 export const transferPlayback = async (
   deviceId: string,
   accessToken: string,
