@@ -10,7 +10,7 @@ import LoginModal from '../../Modals/LoginModal';
 const DesktopTopNav = () => {
   const { isLoggedIn, logout } = useAuthStore();
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-  const pathname = usePathname(); // 현재 경로 가져오기
+  const pathname = usePathname();
 
   const handleLogout = () => {
     logout();
@@ -25,20 +25,19 @@ const DesktopTopNav = () => {
           PLIFY
         </Link>
 
-        {/* 내비게이션 메뉴 */}
         <ul className='flex gap-10 text-l font-regular '>
-          {['Home', 'Playlist', 'Magazine', 'Reviews'].map((item) => {
+          {['Home', 'Playlist'].map((item) => {
             const href =
               item === 'Home'
                 ? '/'
                 : `/${item.toLowerCase().replace(/ /g, '-')}`;
-            const isActive = pathname === href; // 현재 경로와 비교
+            const isActive = pathname === href;
 
             return (
               <li key={item}>
                 <Link
                   href={href}
-                  className={isActive ? 'blur-[1px]' : 'hover:blur-[1px]'}
+                  className={isActive ? 'text-white' : 'hover:blur-[1px] '}
                 >
                   {item}
                 </Link>
@@ -54,9 +53,7 @@ const DesktopTopNav = () => {
               <ThemeToggle />
               <Link
                 href='/mypage'
-                className={
-                  pathname === '/mypage' ? 'blur-[1px]' : 'hover:blur-[1px]'
-                }
+                className={pathname === '/mypage' ? '' : 'hover:blur-[1px]'}
               >
                 My Page
               </Link>
